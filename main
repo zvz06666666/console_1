@@ -1,0 +1,73 @@
+lastGoalPos = UDim2.new(startPos.X.Scale, xGoal, startPos.Y.Scale, yGoal)
+gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED))
+end;
+
+gui.InputBegan:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+dragging = true
+dragStart = input.Position
+startPos = gui.Position
+lastMousePos = UserInputService:GetMouseLocation()
+
+input.Changed:Connect(function()
+if input.UserInputState == Enum.UserInputState.End then
+dragging = false
+end
+end)
+end
+end)
+
+gui.InputChanged:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+dragInput = input
+end
+end)
+
+runService.Heartbeat:Connect(Update)
+    
+    Window.Name = "Window"
+    Window.Parent = ambientShadow
+    Window.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    Window.BorderSizePixel = 0
+    Window.Position = UDim2.new(0, 5, 0, 5)
+    Window.Size = UDim2.new(0, 600, 0, 500)
+    Window.ZIndex = 2
+    
+    Outline_A.Name = "Outline_A"
+    Outline_A.Parent = Window
+    Outline_A.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Outline_A.BorderSizePixel = 0
+    Outline_A.Position = UDim2.new(0, 0, 0, 40)
+    Outline_A.Size = UDim2.new(0, 600, 0, 2)
+    Outline_A.ZIndex = 5
+    
+    ConsoleContainer.Name = "ConsoleContainer"
+    ConsoleContainer.Parent = Window
+    ConsoleContainer.Active = true
+    ConsoleContainer.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    ConsoleContainer.BackgroundTransparency = 1.000
+    ConsoleContainer.BorderSizePixel = 0
+    ConsoleContainer.Position = UDim2.new(0, 10, 0, 50)
+    ConsoleContainer.Size = UDim2.new(0, 580, 0, 440)
+    ConsoleContainer.ZIndex = 3
+    ConsoleContainer.BottomImage = ""
+    ConsoleContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
+    ConsoleContainer.ScrollBarThickness = 0
+    ConsoleContainer.TopImage = ""
+    
+    ConsoleContainerUIListLayout.Name = "ConsoleContainerUIListLayout"
+    ConsoleContainerUIListLayout.Parent = ConsoleContainer
+    ConsoleContainerUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ConsoleContainerUIListLayout.Padding = UDim.new(0, 10)
+    
+    WindowTitle.Name = "WindowTitle"
+    WindowTitle.Parent = Window
+    WindowTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    WindowTitle.BackgroundTransparency = 1.000
+    WindowTitle.BorderColor3 = Color3.fromRGB(27, 42, 53)
+    WindowTitle.BorderSizePixel = 0
+    WindowTitle.Position = UDim2.new(0, 14, 0, 2)
+    WindowTitle.Size = UDim2.new(0, 323, 0, 40)
+    WindowTitle.ZIndex = 4
+    WindowTitle.Font = Enum.Font.GothamSemibold
+    WindowTitle.Text = Title
