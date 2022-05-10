@@ -1,3 +1,83 @@
+
+    local Console = game:GetService("CoreGui"):FindFirstChild("STX_Console")
+    if Console then
+        Console:Destroy()
+    end
+
+local Console = {}
+
+local function pretty_date(date)
+    local dateString = "{year}-{month}-{day} {hour}:{min}"
+    local result = string.gsub(dateString, "{(%w+)}", date)
+    return result
+end
+
+local now = os.time()
+
+function Console:Window(consoledebugger)
+    local Title = tostring(consoledebugger.Title)
+    local GuiPosition = consoledebugger.Position
+    local DragSpeed = consoledebugger.DragSpeed
+    local STX_Console = Instance.new("ScreenGui")
+    local ambientShadow = Instance.new("ImageLabel")
+    local Window = Instance.new("Frame")
+    local Outline_A = Instance.new("Frame")
+    local ConsoleContainer = Instance.new("ScrollingFrame")
+    local ConsoleContainerUIListLayout = Instance.new("UIListLayout")
+    local WindowTitle = Instance.new("TextLabel")
+    local AutoScroll_Locked = Instance.new("Frame")
+    local AutoScroll_LockedUICorner = Instance.new("UICorner")
+    local AutoScroll_Locked_Inner = Instance.new("Frame")
+    local AutoScroll_Locked_InnerUICorner = Instance.new("UICorner")
+    local AutoScroll_Locked_Title = Instance.new("TextLabel")
+    local AutoScroll_Locked_Title_2 = Instance.new("TextLabel")
+    
+    STX_Console.Name = "STX_Console"
+    STX_Console.Parent = game.CoreGui
+    STX_Console.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    
+    ambientShadow.Name = "ambientShadow"
+    ambientShadow.Parent = STX_Console
+    ambientShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+    ambientShadow.BackgroundTransparency = 1.000
+    ambientShadow.BorderSizePixel = 0
+    ambientShadow.Position = GuiPosition
+    ambientShadow.Size = UDim2.new(0, 610, 0, 510)
+    ambientShadow.Image = "rbxassetid://1316045217"
+    ambientShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    ambientShadow.ImageTransparency = 0.400
+    ambientShadow.ScaleType = Enum.ScaleType.Slice
+    ambientShadow.SliceCenter = Rect.new(10, 10, 118, 118)
+
+    local UserInputService = game:GetService("UserInputService")
+    local runService = (game:GetService("RunService"));
+
+    local gui = ambientShadow
+
+    local dragging
+    local dragInput
+    local dragStart
+    local startPos
+
+    function Lerp(a, b, m)
+        return a + (b - a) * m
+    end;
+
+    local lastMousePos
+    local lastGoalPos
+    local DRAG_SPEED = (DragSpeed); -- // The speed of the UI darg.
+    function Update(dt)
+        if not (startPos) then return end;
+        if not (dragging) and (lastGoalPos) then
+            gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, lastGoalPos.X.Offset, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, lastGoalPos.Y.Offset, dt * DRAG_SPEED))
+            return 
+        end;
+
+        local delta = (lastMousePos - UserInputService:GetMouseLocation())
+        local xGoal = (startPos.X.Offset - delta.X);
+        local yGoal = (startPos.Y.Offset - delta.Y);
+
+
 lastGoalPos = UDim2.new(startPos.X.Scale, xGoal, startPos.Y.Scale, yGoal)
 gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED))
 end;
